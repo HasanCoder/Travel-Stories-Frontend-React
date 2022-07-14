@@ -1,0 +1,37 @@
+.nav {
+  position: sticky;
+  background-color: #00232f;
+  width: 100%;
+  height: auto;
+  top: 0;
+  height: 70px;
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
+.topLeft {
+  align-items: flex-start;
+  color: white;
+}
+.topCenter ul {
+  display: flex;
+}
+.topCenter ul li {
+  list-style: none;
+  padding: 10px 50px;
+}
+.topCenter {
+  flex: 2;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.topRight {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  color: white;
+}

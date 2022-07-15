@@ -61,6 +61,7 @@ export default function NewReview() {
           </div>
           <button>Add Transportation</button>
         </div>
+        <button>Submit Your Review</button>
       </form>
     </Card>
   );

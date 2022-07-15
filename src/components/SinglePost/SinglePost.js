@@ -1,21 +1,30 @@
 import React from "react";
-import postImg from "../../images/postimg.png";
+import Card from "../ui/card";
+import "./SinglePost.css";
 
-export default function SinglePost() {
+const MAX_LENGTH = 300;
+export default function SinglePost(props) {
   return (
     <div className="post">
-      <img className="postImg" src={postImg}></img>
-      <div className="postInfo">
-        <div className="postTitle">Guide to Ratti Gali Lake, Kashmir</div>
-        <div className="postDesc">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos,
-          cupiditate? Optio a consequatur veniam molestiae. Aliquid sequi
-          tenetur amet doloribus?Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Sapiente, rem.
+      <Card>
+        <img className="postImg" src={props.image} alt={props.title}></img>
+        <div className="postInfo">
+          <div className="postTitle">{props.title}</div>
+          <div className="postPlace">{props.place}</div>
+          <div className="postDesc">
+            {props.description.length > MAX_LENGTH ? (
+              <div>
+                {`${props.description.substring(0, MAX_LENGTH)}...`}
+                <a href="#">Read More</a>
+              </div>
+            ) : (
+              <p>{props.description}</p>
+            )}
+          </div>
+          <div className="postAuthor">{props.author}</div>
+          <div className="postTime">{props.date}</div>
         </div>
-        <div className="postAuthor">Review by Muhammad Hasan</div>
-        <div className="postTime">1 hour ago</div>
-      </div>
+      </Card>
     </div>
   );
 }

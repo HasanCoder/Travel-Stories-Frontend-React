@@ -21,12 +21,15 @@
 .topCenter ul li {
   list-style: none;
   padding: 10px 50px;
+  text-decoration: none;
+  color: white;
 }
 .topCenter {
   flex: 2;
   justify-content: center;
   align-items: center;
   color: white;
+  text-decoration: none;
 }
 .topRight {
   flex: 1;

@@ -9,6 +9,7 @@ export default function Posts(props) {
         {props.reviews.map((review) => (
           <SinglePost
             key={review.id}
+            id={review.id}
             image={review.image}
             title={review.title}
             place={review.place}

@@ -2,14 +2,14 @@ import React from "react";
 import Card from "../ui/card";
 import "./SinglePost.css";
 import { Link } from "react-router-dom";
-import SinglePostPage from "../../pages/SinglePostPage/SinglePostPage";
+import SinglePostPage from "../../pages/Blog/Blog";
 
 const MAX_LENGTH = 300;
 export default function SinglePost(props) {
   return (
     <div className="post">
       <Card>
-        <Link to="/review-post-1">
+        <Link to={`/blog/${props.id}`}>
           <img className="postImg" src={props.image} alt={props.title}></img>
           <div className="postInfo">
             <div className="postTitle">{props.title}</div>

@@ -1,6 +1,22 @@
 .nav {
+  margin: 0;
   position: sticky;
   background-color: #00232f;
+  width: 100%;
+  height: auto;
+  top: 0;
+  height: 70px;
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
+.noBackgroundnavigation {
+  margin: 0px;
+  padding: 20px 0px;
+  /* position: sticky; */
+  /* background-color: #f9c909; */
   width: 100%;
   height: auto;
   top: 0;
@@ -14,27 +30,53 @@
 .topLeft {
   align-items: flex-start;
   color: white;
+  flex-direction: column;
+  margin-left: 9em;
+  font-family: "Arima Madurai", cursive;
+  font-size: 35px;
+  /* border: 2px solid #ffa902; */
+  padding-right: 2 0px;
+}
+.yellotxt {
+  color: #ffa902;
 }
 .topCenter ul {
+  /* border: 2px solid darkgreen; */
+  text-decoration: none;
   display: flex;
 }
 .topCenter ul li {
   list-style: none;
-  padding: 10px 50px;
+  padding: 10px 40px;
   text-decoration: none;
   color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+}
+.topCenter ul li:visited {
+  text-decoration: none;
 }
 .topCenter {
-  flex: 2;
   justify-content: center;
   align-items: center;
   color: white;
   text-decoration: none;
+  /* justify-content: center; */
+  /* align-items: center; */
+  margin: 0px 20px;
+  /* border: 2px solid #ffa902; */
 }
 .topRight {
-  flex: 1;
+  margin-right: 10em;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+  width: fit-content;
   color: white;
+  padding: 0;
+  /* border: 2px solid rgb(22, 245, 22);s */
+  font-size: 28;
+}
+.yellowtxt {
+  color: #ffa902;
+  font-size: x-large;
+  margin-left: 2em;
 }

@@ -1,11 +1,10 @@
 import React from "react";
 import SinglePost from "../SinglePost/SinglePost";
-import Card from "../ui/card";
 
 export default function Posts(props) {
   return (
     <>
-      <div className="posts_container">
+      <div className="flex flex-wrap flex-row justify-center">
         {props.reviews.map((review) => (
           <SinglePost
             key={review.id}

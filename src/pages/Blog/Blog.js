@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Footer from "../../components/footer/footer";
 import Topbar from "../../components/topbar/Topbar";
 import { useParams } from "react-router-dom";
 import { dummyReviews } from "../../config/data";

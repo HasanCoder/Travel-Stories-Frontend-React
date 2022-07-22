@@ -7,7 +7,8 @@ import MyReviews from "./pages/MyReviewsPage/MyReviews";
 import MyFavouriteReviews from "./pages/MyFavouriteReviewsPage/MyFavouriteReviews";
 import App from "./App";
 import SinglePostPage from "./pages/Blog/Blog";
-import Login from "./components/Login/Login";
+// import Login from "./components/Login/Login";
+import Auth from "./pages/Auth/Auth";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -19,7 +20,7 @@ root.render(
       <Route path="my-reviews" element={<MyReviews />} />
       <Route path="my-favourite" element={<MyFavouriteReviews />} />
       <Route path="blog/:id" element={<SinglePostPage />} />
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<Auth />} />
     </Routes>
   </BrowserRouter>
 );

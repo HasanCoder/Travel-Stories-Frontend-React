@@ -4,6 +4,7 @@ import "./SinglePost.css";
 import { Link } from "react-router-dom";
 import SinglePostPage from "../../pages/Blog/Blog";
 import { ClockIcon } from "@heroicons/react/solid";
+import { Rating } from "@mui/material";
 
 const MAX_LENGTH = 300;
 export default function SinglePost(props) {
@@ -40,6 +41,9 @@ export default function SinglePost(props) {
               ) : (
                 <p>{props.description}</p>
               )}
+            </div>
+            <div>
+              <Rating value={props.rating} readOnly className="px-5 py-3" />
             </div>
             <div className="flex flex-wrap flex-row justify-between">
               <div className="postAuthor text-[#FFA902] px-5 py-3 text-lg justify-start">

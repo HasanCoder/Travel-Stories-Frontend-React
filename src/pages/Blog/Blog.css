@@ -1,0 +1,20 @@
+.wrapper .list{
+    overflow-y: auto;
+    max-height: 250px;
+}
+
+.list li{
+width: 300px;
+line-height: 100px;
+border: 1px solid black;
+font-size: medium;
+position: relative;
+cursor: default;
+overflow: hidden;
+padding: 0 15px;
+}
+
+.lis{
+border-left: 3px solid black;
+border-radius: 37px;
+}

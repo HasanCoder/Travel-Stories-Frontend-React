@@ -8,19 +8,66 @@ import MyFavouriteReviews from "./pages/MyFavouriteReviewsPage/MyFavouriteReview
 import App from "./App";
 import SinglePostPage from "./pages/Blog/Blog";
 // import Login from "./components/Login/Login";
-import Auth from "./pages/Auth/Auth";
+import Login from "./pages/Auth/Login";
 import "./index.css";
+import SignUp from "./pages/Auth/SignUp";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./ProtectedRoute";
+import UsersPage from "./pages/UsersPageforAdmin/UsersPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
+    <ToastContainer
+      autoClose={3000}
+      position="top-center"
+      hideProgressBar={true}
+    />
     <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="write-review" element={<WriteReview />} />
-      <Route path="my-reviews" element={<MyReviews />} />
-      <Route path="my-favourite" element={<MyFavouriteReviews />} />
-      <Route path="blog/:id" element={<SinglePostPage />} />
-      <Route path="login" element={<Auth />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <App />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="write-review"
+        element={
+          <ProtectedRoute>
+            <WriteReview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="my-reviews"
+        element={
+          <ProtectedRoute>
+            <MyReviews />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="my-favourite"
+        element={
+          <ProtectedRoute>
+            <MyFavouriteReviews />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="blog/:id"
+        element={
+          <ProtectedRoute>
+            <SinglePostPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="login" element={<Login />} />
+      <Route path="signup" element={<SignUp />} />
+      <Route path="users" element={<UsersPage />} />
     </Routes>
   </BrowserRouter>
 );

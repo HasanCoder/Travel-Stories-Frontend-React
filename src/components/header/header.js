@@ -1,6 +1,7 @@
 import React from "react";
 import "./header.css";
 import { SearchIcon } from "@heroicons/react/outline";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -27,9 +28,11 @@ export default function Header() {
           decide where to go, where to stay, what to do at the places you
           choose, how much expense you need, etc,.
         </p>
-        <p className="text-[#FFA902] font-poppins font-bold text-3xl mt-[70px] pb-[249px] pt-10">
-          Let's Go.....
-        </p>
+        <Link to="/write-review">
+          <p className="text-[#FFA902] font-poppins font-bold text-3xl mt-[70px] pb-[249px] pt-10">
+            Let's Go.....
+          </p>
+        </Link>
       </div>
     </div>
   );

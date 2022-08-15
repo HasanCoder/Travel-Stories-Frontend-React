@@ -1,11 +1,13 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import { Stack } from "@mui/material";
-import { storage } from "../../firebase";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
-import { v4 } from "uuid";
+
+import { getLoginInfo } from "../../utils/LoginInfo.ts";
+import custom_axios from "../../axios/axiosSetup.ts";
+import { ApiConstants } from "../../api/ApiConstants.ts";
+import { toast } from "react-toastify";
 
 const labels = {
   1: "Terrible",
@@ -23,7 +25,8 @@ export default function NewReview(props) {
   const [Ratingvalue, setRatingValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
   const [imagefiles, setImagefiles] = useState(null);
-  const [imageUrls, setImageUrls] = useState([]);
+  const [uploadImage, setUploadImage] = useState(false);
+  // const [imageUrls, setImageUrls] = useState([]);
 
   const titleInputRef = useRef();
   const placeInputRef = useRef();
@@ -36,53 +39,127 @@ export default function NewReview(props) {
   const transportNameInputRef = useRef();
   const transportCostInputRef = useRef();
   const transportRefInputRef = useRef();
+  const formRef = useRef();
 
-  function submitHandler(event) {
+  const submitHandler = async (event) => {
     event.preventDefault();
     const enteredTitle = titleInputRef.current.value;
     const enteredPlace = placeInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
     const enteredDate = dateInputRef.current.value;
-    const enteredImage = imageInputRef.current.value;
+    const enteredImage = imageInputRef.current.files[0];
     const enteredhotelName = hotelNameInputRef.current.value;
-    const enteredhotelCost = hotelCostInputRef.current.value;
+    const enteredhotelCost = parseInt(hotelCostInputRef.current.value);
     const enteredhotelRef = hotelRefInputRef.current.value;
     const enteredTransportName = transportNameInputRef.current.value;
     const enteredTransportRef = transportRefInputRef.current.value;
-    const enteredTransportCost = transportCostInputRef.current.value;
+    const enteredTransportCost = parseInt(transportCostInputRef.current.value);
 
     const ReviewData = {
-      title: enteredTitle,
-      place: enteredPlace,
-      rating: Ratingvalue,
-      description: enteredDescription,
-      date: enteredDate,
-      image: imageUrls,
-      hotelName: enteredhotelName,
-      hotelCost: enteredhotelCost,
-      hotelRef: enteredhotelRef,
-      transportName: enteredTransportName,
-      transportRef: enteredTransportRef,
-      transportCost: enteredTransportCost,
+      Title: enteredTitle,
+      Place: enteredPlace,
+      Rating: Ratingvalue,
+      Experience: enteredDescription,
+      start_date: enteredDate,
+      Images: enteredImage,
+      Hotel_name: enteredhotelName,
+      Hotel_cost: enteredhotelCost,
+      Hotel_refno: enteredhotelRef,
+      Transport_name: enteredTransportName,
+      Transport_refno: enteredTransportRef,
+      Transport_cost: enteredTransportCost,
     };
 
-    // console.log(ReviewData);
     // console.log(imageUrls);
-    props.onAddReview(ReviewData);
-  }
+    // props.onAddReview(ReviewData);
+
+    const userId = getLoginInfo()?.userId;
+    if (userId !== null) {
+      // console.log(`reviewData :: ${JSON.stringify(ReviewData, null, 4)}`);
+      // console.log(formRef.current);
+      const data = new FormData(formRef.current);
+      // console.log(ReviewData);
+      // for (const key in ReviewData) {
+      //   const element = ReviewData[key];
+      //   data.append(key, element);
+      // }
+      // data.append("Title", titleInputRef.current.value);
+      // data.append("Place", placeInputRef.current.value);
+      // data.append("Description", descriptionInputRef.current.value);
+      // data.append("Date", dateInputRef.current.value);
+      // data.append("Image", imageInputRef.current.files[0]);
+      // data.append("hotelName", hotelNameInputRef.current.value);
+      // data.append("hotelCost", parseInt(hotelCostInputRef.current.value));
+      // data.append("hotelRef", hotelRefInputRef.current.value);
+      // data.append("TransportName", transportNameInputRef.current.value);
+      // data.append("TransportRef", transportRefInputRef.current.value);
+      // data.append(
+      //   "TransportCost",
+      //   parseInt(transportCostInputRef.current.value)
+      // );
+      for (const [key, value] of data) {
+        console.log(key, value);
+      }
+      // console.log(data.entries());
+      try {
+        await fetch(
+          `http://localhost:3000${ApiConstants.REVIEW.ADD_REVIEW(userId)}`,
+          {
+            method: "post",
+            body: data,
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              // Authorization:
+              //   "Bearer " +
+              //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiaGFzYW4iLCJlbWFpbCI6Imhhc2FuQGdtYWlsLmNvbSIsInJvbGUiOiJOT1JNQUxfVVNFUl9ST0xFIiwiaWF0IjoxNjYwNDA5OTU5LCJleHAiOjE2NjA0MTM1NTl9.4GxT3Qbs49qO71ZnOm0RWWJDpfNHIT6rMuGnKQBRjVs",
+              // "Content-Type": "multipart/form-data; boundary=meri-boundary",
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
+      // {
+      //   Title: enteredTitle,
+      //   Place: enteredPlace,
+      //   Rating: Ratingvalue,
+      //   Experience: enteredDescription,
+      //   start_date: enteredDate,
+      //   Images: enteredImage,
+      //   Hotel_name: enteredhotelName,
+      //   Hotel_cost: enteredhotelCost,
+      //   Hotel_refno: enteredhotelRef,
+      //   Transport_name: enteredTransportName,
+      //   Transport_refno: enteredTransportRef,
+      //   Transport_cost: enteredTransportCost,
+      // },
+      // {
+      toast.success("Review Submitted Scuessfully");
+    } else {
+      toast.info("Sorry you are not authenticated");
+    }
+  };
+
   const fileSelectHandler = (event) => {
+    console.log(event.target.files[0].name);
     setImagefiles(event.target.files[0]);
   };
-  const imagesListRef = ref(storage, "images/");
-  const fileUploadHandler = (event) => {
-    if (imagefiles == null) return;
-    const imageRef = ref(storage, `images/${imagefiles.name + v4()}`);
-    uploadBytes(imageRef, imagefiles).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setImageUrls((prev) => [...prev, url]);
-      });
-    });
+
+  const fileUploadHandler = async () => {
+    console.log(imagefiles);
   };
+
+  // const imagesListRef = ref(storage, "images/");
+  // const fileUploadHandler = (event) => {
+  //   if (imagefiles == null) return;
+  //   const imageRef = ref(storage, `images/${imagefiles.name + v4()}`);
+  //   uploadBytes(imageRef, imagefiles).then((snapshot) => {
+  //     getDownloadURL(snapshot.ref).then((url) => {
+  //       setImageUrls((prev) => [...prev, url]);
+  //     });
+  //   });
+  // };
 
   // useEffect(() => {
   //   listAll(imagesListRef).then((response) => {
@@ -112,7 +189,12 @@ export default function NewReview(props) {
   // };
   return (
     <>
-      <form className="m-10 flex place-content-center" onSubmit={submitHandler}>
+      <form
+        className="m-10 flex place-content-center"
+        onSubmit={submitHandler}
+        encType="multipart/form-data"
+        ref={formRef}
+      >
         <div className="w-1/2">
           <div className="m-5">
             <label htmlFor="title" className="block mb-3 text-lg">
@@ -122,6 +204,7 @@ export default function NewReview(props) {
               type="text"
               required
               id="title"
+              name="Title"
               placeholder="Enter title for your review"
               className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 placeholder:text-md"
               ref={titleInputRef}
@@ -135,6 +218,7 @@ export default function NewReview(props) {
               type="text"
               required
               id="place"
+              name="Place"
               placeholder="Enter the place you have travelled"
               className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               ref={placeInputRef}
@@ -155,7 +239,7 @@ export default function NewReview(props) {
             >
               <Stack spacing={2}>
                 <Rating
-                  name="hover-feedback"
+                  name="Rating"
                   value={Ratingvalue}
                   precision={1}
                   size="large"
@@ -186,6 +270,7 @@ export default function NewReview(props) {
             <textarea
               required
               id="description"
+              name="Experience"
               rows="10"
               placeholder="Please tell us about your experience of your journey: describe the place or activity, recommendations for travellers?"
               className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
@@ -200,6 +285,7 @@ export default function NewReview(props) {
               type="date"
               required
               id="date"
+              name="start_date"
               placeholder="Pick the date when you travelled"
               className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               ref={dateInputRef}
@@ -211,8 +297,10 @@ export default function NewReview(props) {
             </label>
             <input
               type="file"
-              required
+              // required
+              multiple
               id="upload"
+              name="Images"
               className="block w-full text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
       file:rounded-full file:border-0
@@ -220,19 +308,19 @@ export default function NewReview(props) {
       file:bg-violet-50 file:text-violet-700
       hover:file:bg-violet-100"
               ref={imageInputRef}
-              onChange={fileSelectHandler}
+              // onChange={fileSelectHandler}
             />
-            <button
+            {/* <button
               type="button"
               onClick={fileUploadHandler}
               className="mt-3 bg-violet-50 text-violet-700 font-semibold text-md rounded-full py-2 px-4 hover:bg-violet-100"
             >
               Upload
-            </button>
+            </button> */}
           </div>
-          {imageUrls.map((url) => {
+          {/* {imageUrls.map((url) => {
             return <img src={url} className="w-1/5  m-10" />;
-          })}
+          })} */}
         </div>
 
         <div className="w-1/2">
@@ -245,6 +333,7 @@ export default function NewReview(props) {
               <input
                 type="text"
                 id="hotelname"
+                name="Hotel_name"
                 placeholder="Name of Hotel"
                 className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 ref={hotelNameInputRef}
@@ -257,6 +346,7 @@ export default function NewReview(props) {
               <input
                 type="text"
                 id="costofstay"
+                name="Hotel_cost"
                 placeholder="Rs"
                 className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 ref={hotelCostInputRef}
@@ -269,6 +359,7 @@ export default function NewReview(props) {
               <input
                 type="text"
                 id="refnum"
+                name="Hotel_refno"
                 placeholder="+92"
                 className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 ref={hotelRefInputRef}
@@ -289,6 +380,7 @@ export default function NewReview(props) {
               <input
                 type="text"
                 id="transport_name"
+                name="Transport_name"
                 placeholder="Enter name of the transportation service you availed"
                 className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 ref={transportNameInputRef}
@@ -301,6 +393,7 @@ export default function NewReview(props) {
               <input
                 type="number"
                 id="reftransport"
+                name="Transport_refno"
                 placeholder="+92"
                 className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 ref={transportRefInputRef}
@@ -313,6 +406,7 @@ export default function NewReview(props) {
               <input
                 type="number"
                 id="transport_cost"
+                name="Transport_cost"
                 placeholder="Rs"
                 className="w-[70%] border border-gray-400 px-3 py-2 rounded-lg shadow-md focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 ref={transportCostInputRef}

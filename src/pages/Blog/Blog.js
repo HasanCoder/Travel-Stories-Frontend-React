@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Topbar from "../../components/topbar/Topbar";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { dummyReviews } from "../../config/data";
+
 import { Rating } from "@mui/material";
+import { ArrowNarrowLeftIcon } from "@heroicons/react/outline";
+import custom_axios from "../../axios/axiosSetup.ts";
+import { ApiConstants } from "../../api/ApiConstants.ts";
 
 // import { async } from "@firebase/util";
 
@@ -12,6 +15,8 @@ export default function Blog(props) {
   // const [loadedReviews, setLoadedReviews] = useState([]);
   const [blog, setBlog] = useState(null);
   const { id } = useParams();
+  // const [image, setImage] = useState(null);
+  // const [ImgRes, setImgRes] = useState();
 
   // async function getReviews() {
   //   const review = await fetch(
@@ -55,12 +60,43 @@ export default function Blog(props) {
   //     });
   // }, []);
 
+  const getReviewById = useCallback(async () => {
+    const response = await custom_axios.get(
+      ApiConstants.REVIEW.GET_SINGLE_REVIEW(parseInt(id)),
+      { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
+    );
+    setBlog(response.data);
+  }, [id]);
+
+  // const getImageByReviewId = async () => {
+  //   let response = await fetch("http://localhost:3000/review/image/27", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: "Bearer " + localStorage.getItem("token"),
+  //       Accept: "*/*",
+  //     },
+  //   });
+
+  //   let data = await response.text();
+  //   console.log(data);
+  //   // const resultImg = URL.createObjectURL(response.blob());
+  //   // setImage(resultImg);
+
+  //   // const response = await custom_axios.get(
+  //   //   ApiConstants.REVIEW.GET_IMAGE(parseInt(id)),
+  //   //   { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
+  //   // );
+  //   // console.log("id :: ", +id);
+  //   // // let data = await response.text();
+  //   // const resultImg = URL.createObjectURL(response.data);
+  //   // console.log("This is response ", +resultImg);
+  //   // setImage(response.data);
+  // };
+
   useEffect(() => {
-    let blog = dummyReviews.find((review) => review.id === parseInt(id));
-    if (blog) {
-      setBlog(blog);
-    }
-  }, []);
+    // getImageByReviewId();
+    getReviewById();
+  }, [getReviewById]);
 
   // if (isLoading) {
   //   return (
@@ -85,57 +121,90 @@ export default function Blog(props) {
     <>
       <Topbar />
       <Link to="/" className="m-10 my-10">
-        Go Back
+        <div className="flex flex-row">
+          <ArrowNarrowLeftIcon className="w-5 h-5 mx-2 pt-1" />
+          <span>Go Back</span>
+        </div>
       </Link>
       {blog ? (
         <div className="m-20">
           <div>
             <span className="font-poppins font-medium text-black text-3xl">
-              {blog.title},{" "}
+              {blog.Title},{" "}
             </span>
             <span className="font-poppins font-medium text-[#FFA902] text-3xl">
-              {blog.place}
+              {blog.Place}
             </span>
           </div>
           <div className="my-10 mb-5">
             {/* <div className="text-[#8D8D8D]">{blog.author}</div> */}
-            <div className="text-[#8D8D8D]">{blog.date}</div>
-            <Rating value={blog.rating} readOnly />
+            <div className="text-[#8D8D8D]">{blog.start_date}</div>
+            <Rating value={blog.Rating} readOnly />
           </div>
           <img
             className=" w-full h-2/3"
-            src={blog.image}
+            src={`http://localhost:3000/public/review-images/${blog.Images[0]}`}
             alt={blog.title}
+            loading="lazy"
           ></img>
           <div className="postInfo">
-            <div className="postDesc my-5 ">{blog.description}</div>
+            <div className="postDesc my-5 ">{blog.Experience}</div>
           </div>
           <div className="my-5">
             <h1 className="underline text-2xl mb-2">Staying Hotel</h1>
-            <p>Hotel Name: {blog.hotelName}</p>
-            <p>Cost per night: {blog.hotelCost}</p>
-            <p>Hotel Reference number: {blog.hotelRef}</p>
+            <p>Hotel Name: {blog.Hotel_name}</p>
+            <p>Cost per night: {blog.Hotel_cost}</p>
+            <p>Hotel Reference number: {blog.Hotel_refno}</p>
           </div>
           <div className="my-5">
             <h1 className="underline text-2xl mb-2">
               Transportation Service availed
             </h1>
-            <p>Name of Transportation Service: {blog.transportName}</p>
-            <p>Cost: {blog.transportCost}</p>
+            <p>Name of Transportation Service: {blog.Transport_name}</p>
+            <p>Cost: {blog.Transport_cost}</p>
             <p>
-              Reference number of Transportation Service: {blog.transportRef}
+              Reference number of Transportation Service: {blog.Transport_refno}
             </p>
           </div>
           <div className="flex flex-wrap justify-between">
-            <img src={require("../../images/image 3.png")} className="m-5" />
-            <img src={require("../../images/image 4.png")} className="m-5" />
-            <img src={require("../../images/image 5.png")} className="m-5" />
-            <img src={require("../../images/image 6.png")} className="m-5" />
+            {blog.Images?.map((image, index) =>
+              index !== 0 ? (
+                <img
+                  src={`http://localhost:3000/public/review-images/${image}`}
+                  className="m-5"
+                  alt="not uploaded"
+                />
+              ) : (
+                <></>
+              )
+            )}
           </div>
-          <div className="m-5">
+          {/* <div className="flex flex-wrap justify-between">
+            <img
+              src={require("../../images/image 3.png")}
+              className="m-5"
+              alt=""
+            />
+            <img
+              src={require("../../images/image 4.png")}
+              className="m-5"
+              alt=""
+            />
+            <img
+              src={require("../../images/image 5.png")}
+              className="m-5"
+              alt=""
+            />
+            <img
+              src={require("../../images/image 6.png")}
+              className="m-5"
+              alt=""
+            />
+          </div> */}
+          {/* <div className="m-5">
             <span className="text-black font-semibold">Author - </span>
             <span className="text-[#FFA902] font-semibold">{blog.author}</span>
-          </div>
+          </div> */}
         </div>
       ) : null}
     </>

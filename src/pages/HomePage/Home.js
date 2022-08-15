@@ -3,41 +3,26 @@ import Footer from "../../components/footer/footer";
 import Header from "../../components/header/header";
 import Posts from "../../components/posts/Posts";
 import "./Home.css";
-import { dummyReviews } from "../../config/data";
+
 import Topbar from "../../components/topbar/Topbar";
+import custom_axios from "../../axios/axiosSetup.ts";
+import { ApiConstants } from "../../api/ApiConstants.ts";
 
 export default function Home() {
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [loadedReviews, setLoadedReviews] = useState([]);
-  // useEffect(() => {
-  //   fetch(
-  //     "https://travel-stories-74648-default-rtdb.asia-southeast1.firebasedatabase.app/reviews.json"
-  //   )
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       const reviews = [];
-  //       for (const key in data) {
-  //         const review = {
-  //           id: key,
-  //           ...data[key],
-  //         };
-  //         reviews.push(review);
-  //       }
-  //       setIsLoading(false);
-  //       setLoadedReviews(reviews);
-  //     });
-  // }, []);
+  const [reviews, setReviews] = useState([]);
 
-  // if (isLoading) {
-  //   return (
-  //     <section>
-  //       <p>Loading...</p>
-  //     </section>
-  //   );
-  // }
+  const getAllReviews = async () => {
+    const response = await custom_axios.get(
+      ApiConstants.REVIEW.GET_ALL_REVIEWS,
+      { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
+    );
+    setReviews(response.data);
+  };
+
+  useEffect(() => {
+    getAllReviews();
+  }, []);
+
   return (
     <div className="home">
       <div className="background">
@@ -45,9 +30,9 @@ export default function Home() {
         <Header />
       </div>
       <h1 className="text-center mt-10 font-bold text-4xl mb-10">
-        Top Reviews
+        All Reviews
       </h1>
-      <Posts reviews={dummyReviews} />
+      <Posts reviews={reviews} />
       <Footer />
     </div>
   );

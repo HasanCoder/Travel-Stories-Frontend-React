@@ -5,29 +5,16 @@ import Topbar from "../../components/topbar/Topbar";
 import { useNavigate } from "react-router-dom";
 
 export default function WriteReview() {
-  const navigate = useNavigate();
+  // function addReviewHandler(reviewData) {
 
-  function addReviewHandler(reviewData) {
-    fetch(
-      "https://travel-stories-74648-default-rtdb.asia-southeast1.firebasedatabase.app/reviews.json",
-      {
-        method: "POST",
-        body: JSON.stringify(reviewData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then(() => {
-      navigate("/");
-    });
-  }
+  // }
   return (
     <>
       <Topbar />
-      <h1 className="text-4xl font-poppins font-normal m-10">
+      <h1 className="text-4xl font-poppins font-normal mx-14 mt-5">
         Write your Review
       </h1>
-      <NewReview onAddReview={addReviewHandler} />
+      <NewReview />
       <Footer />
     </>
   );

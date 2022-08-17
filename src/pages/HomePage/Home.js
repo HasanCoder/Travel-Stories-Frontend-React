@@ -23,16 +23,23 @@ export default function Home() {
     getAllReviews();
   }, []);
 
+  const [search, setSearch] = useState("");
+  console.log(search);
+
   return (
     <div className="home">
       <div className="background">
         <Topbar className="noBackground" />
-        <Header />
+        <Header setSearch={setSearch} />
       </div>
       <h1 className="text-center mt-10 font-bold text-4xl mb-10">
         All Reviews
       </h1>
-      <Posts reviews={reviews} />
+      <Posts
+        reviews={reviews.filter((review) =>
+          review.Place.toLowerCase().includes(search)
+        )}
+      />
       <Footer />
     </div>
   );

@@ -3,7 +3,7 @@ import "./header.css";
 import { SearchIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+export default function Header(props) {
   return (
     <div className="">
       <hr className="hr" />
@@ -12,7 +12,8 @@ export default function Header() {
         <input
           placeholder="Search your destination"
           type="text"
-          className="w-70 px-2 pr-20 border-0 border-white"
+          className="w-70 px-2 pr-20 border-0 border-white focus:outline-none"
+          onChange={(e) => props.setSearch(e.target.value)}
         ></input>
       </div>
 

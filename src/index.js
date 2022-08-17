@@ -15,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./ProtectedRoute";
 import UsersPage from "./pages/UsersPageforAdmin/UsersPage";
+import UpdateReview from "./pages/UpdateReviewPage/UpdateReviewPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -65,9 +66,38 @@ root.render(
           </ProtectedRoute>
         }
       />
-      <Route path="login" element={<Login />} />
-      <Route path="signup" element={<SignUp />} />
-      <Route path="users" element={<UsersPage />} />
+      <Route
+        path="login"
+        element={
+          <ProtectedRoute>
+            <Login />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="signup"
+        element={
+          <ProtectedRoute>
+            <SignUp />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="users"
+        element={
+          <ProtectedRoute>
+            <UsersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="update-review/:id"
+        element={
+          <ProtectedRoute>
+            <UpdateReview />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   </BrowserRouter>
 );

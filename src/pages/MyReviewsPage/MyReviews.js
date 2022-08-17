@@ -43,7 +43,7 @@ export default function MyReviews() {
             <Card>
               <img
                 className="postImg"
-                src={`http://localhost:3000/public/review-images/${myReview.Images[0]}`}
+                src={`https://storage.googleapis.com/travel-stories-74648.appspot.com/images/${myReview.Images[0]}`}
                 alt={myReview.title}
               ></img>
               <div className="postInfo">
@@ -89,6 +89,11 @@ export default function MyReviews() {
                   </div>
                 </div>
                 <div className=" text-center">
+                  <Link to={`/update-review/${myReview.id}`}>
+                    <button className="text-[#ff3358] text-lg rounded-md p-2 px-7 drop-shadow-xl font-semibold  border-2 border-[#ff3358] hover:text-white hover:bg-[#ff3358]">
+                      Edit
+                    </button>
+                  </Link>
                   <button
                     onClick={async () => {
                       await custom_axios.patch(
@@ -105,6 +110,9 @@ export default function MyReviews() {
                     className="m-10 mt-2 text-[#ff3358] text-lg rounded-md p-2 px-7 drop-shadow-xl font-semibold  border-2 border-[#ff3358] hover:text-white hover:bg-[#ff3358]"
                   >
                     To Favourite
+                  </button>
+                  <button className="text-[#ff3358] text-lg rounded-md p-2 px-7 drop-shadow-xl font-semibold  border-2 border-[#ff3358] hover:text-white hover:bg-[#ff3358]">
+                    Delete
                   </button>
                 </div>
               </div>

@@ -45,7 +45,7 @@ export default function MyFavouriteReviews() {
             <Card>
               <img
                 className="postImg"
-                src={`http://localhost:3000/public/review-images/${myFavouriteReview.Images[0]}`}
+                src={`https://storage.googleapis.com/travel-stories-74648.appspot.com/images/${myFavouriteReview.Images[0]}`}
                 alt={myFavouriteReview.title}
               ></img>
               <Link

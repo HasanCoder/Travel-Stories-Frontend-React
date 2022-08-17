@@ -28,6 +28,7 @@ export const ApiConstants = {
     DELETE: (reviewId: number) => {
       return "/review/" + reviewId;
     },
+
     UPDATE_REVIEW: (reviewId: number) => {
       return "/review/" + reviewId;
     },
